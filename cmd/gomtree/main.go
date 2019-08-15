@@ -14,18 +14,20 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func (s *mtree.Pathfilters) String() string {
+type pathFilter mtree.Pathfilters
+
+func (s *pathFilter) String() string {
 	return fmt.Sprintf("%s", *s)
 }
 
 // The second method is Set(value string) error
-func (s *mtree.Pathfilters) Set(value string) error {
+func (s *pathFilter) Set(value string) error {
 	fmt.Printf("%s\n", value)
 	*s = append(*s, value)
 	return nil
 }
 
-var FLOnlyInclude mtree.Pathfilters
+var flOnlyInclude pathFilter
 
 var (
 	// Flags common with mtree(8)
@@ -54,7 +56,7 @@ func main() {
 }
 
 func app() error {
-	flag.Var(&FLOnlyInclude, "O", "Include these paths only")
+	flag.Var(&flOnlyInclude, "O", "Include these paths only")
 	flag.Parse()
 
 	if *flDebug {
@@ -223,7 +225,8 @@ func app() error {
 		excludes = append(excludes, mtree.ExcludeNonDirectories)
 	}
 
-	if len(FLOnlyInclude) > 0 {
+	if len(flOnlyInclude) > 0 {
+		mtree.OnlyInclude = flOnlyInclude
 		excludes = append(excludes, mtree.ExcludeBasedOnList)
 	}
 
