@@ -1,6 +1,6 @@
 
 BUILD := gomtree
-BUILDPATH := github.com/vbatts/go-mtree/cmd/gomtree
+BUILDPATH := github.com/ljesmin/go-mtree/cmd/gomtree
 CWD := $(shell pwd)
 SOURCE_FILES := $(shell find . -type f -name "*.go")
 CLEAN_FILES := *~
