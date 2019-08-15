@@ -13,9 +13,11 @@ import (
 	"github.com/vbatts/go-mtree/pkg/govis"
 )
 
+// Pathfilters are strings that are used by ExcludeBasedOnList
 type Pathfilters []string
 
-var FLOnlyInclude Pathfilters
+// OnlyInclude is static
+var OnlyInclude Pathfilters
 
 // ExcludeFunc is the type of function called on each path walked to determine
 // whether to be excluded from the assembled DirectoryHierarchy. If the func
@@ -29,8 +31,8 @@ var ExcludeNonDirectories = func(path string, info os.FileInfo) bool {
 
 // ExcludeBasedOnList is an ExcludeFunc for excluding based on -O flags
 var ExcludeBasedOnList = func(path string, info os.FileInfo) bool {
-	for i := 0; i < len(FLOnlyInclude); i++ {
-		fmt.Print("Path on %s", FLOnlyInclude[i])
+	for i := 0; i < len(OnlyInclude); i++ {
+		fmt.Printf("Path on %s\n", OnlyInclude[i])
 	}
 	return true
 }
