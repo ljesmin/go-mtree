@@ -10,9 +10,22 @@ import (
 	"os"
 	"strings"
 
+	"github.com/ljesmin/go-mtree"
 	"github.com/sirupsen/logrus"
-	"github.com/vbatts/go-mtree"
 )
+
+func (s *mtree.Pathfilters) String() string {
+	return fmt.Sprintf("%s", *s)
+}
+
+// The second method is Set(value string) error
+func (s *mtree.Pathfilters) Set(value string) error {
+	fmt.Printf("%s\n", value)
+	*s = append(*s, value)
+	return nil
+}
+
+var FLOnlyInclude mtree.Pathfilters
 
 var (
 	// Flags common with mtree(8)
@@ -23,7 +36,6 @@ var (
 	flUseKeywords      = flag.String("k", "", "Use the specified (delimited by comma or space) keywords as the current set of keywords")
 	flDirectoryOnly    = flag.Bool("d", false, "Ignore everything except directory type files")
 	flUpdateAttributes = flag.Bool("u", false, "Modify the owner, group, permissions and xattrs of files, symbolic links and devices, to match the provided specification. This is not compatible with '-T'.")
-
 	// Flags unique to gomtree
 	flListKeywords     = flag.Bool("list-keywords", false, "List the keywords available")
 	flResultFormat     = flag.String("result-format", "bsd", "output the validation results using the given format (bsd, json, path)")
@@ -42,6 +54,7 @@ func main() {
 }
 
 func app() error {
+	flag.Var(&FLOnlyInclude, "O", "Include these paths only")
 	flag.Parse()
 
 	if *flDebug {
@@ -208,6 +221,10 @@ func app() error {
 	// -d
 	if *flDirectoryOnly {
 		excludes = append(excludes, mtree.ExcludeNonDirectories)
+	}
+
+	if len(FLOnlyInclude) > 0 {
+		excludes = append(excludes, mtree.ExcludeBasedOnList)
 	}
 
 	// -u
