@@ -13,6 +13,10 @@ import (
 	"github.com/vbatts/go-mtree/pkg/govis"
 )
 
+type Pathfilters []string
+
+var FLOnlyInclude Pathfilters
+
 // ExcludeFunc is the type of function called on each path walked to determine
 // whether to be excluded from the assembled DirectoryHierarchy. If the func
 // returns true, then the path is not included in the spec.
@@ -23,6 +27,13 @@ var ExcludeNonDirectories = func(path string, info os.FileInfo) bool {
 	return !info.IsDir()
 }
 
+// ExcludeBasedOnList is an ExcludeFunc for excluding based on -O flags
+var ExcludeBasedOnList = func(path string, info os.FileInfo) bool {
+	for i := 0; i < len(FLOnlyInclude); i++ {
+		fmt.Print("Path on %s", FLOnlyInclude[i])
+	}
+	return true
+}
 var defaultSetKeyVals = []KeyVal{"type=file", "nlink=1", "flags=none", "mode=0664"}
 
 // Walk from root directory and assemble the DirectoryHierarchy
