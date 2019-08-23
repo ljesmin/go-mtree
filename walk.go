@@ -33,8 +33,9 @@ var ExcludeNonDirectories = func(path string, info os.FileInfo) bool {
 var ExcludeBasedOnList = func(path string, info os.FileInfo) bool {
 	for _, s := range OnlyInclude {
 		fmt.Printf("Muster on %s ja path %s\n", s, path)
-		matched, _ := filepath.Match(s, path)
-		if matched {
+		partialpathmatched, _ := filepath.Match(s, filepath.Base(path))
+		fullpathmatched, _ := filepath.Match(s, path)
+		if fullpathmatched || partialpathmatched {
 			fmt.Printf("Sobiv Path on %s\n", s)
 			return true
 		}
