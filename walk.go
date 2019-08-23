@@ -35,7 +35,7 @@ var ExcludeBasedOnList = func(path string, info os.FileInfo) bool {
 		fmt.Printf("Muster on %s ja path %s\n", s, path)
 		partialpathmatched, _ := filepath.Match(s, filepath.Base(path))
 		fullpathmatched, _ := filepath.Match(s, path)
-		if fullpathmatched || partialpathmatched {
+		if fullpathmatched || partialpathmatched || info.IsDir() {
 			fmt.Printf("Sobiv Path on %s\n", s)
 			return false
 		}
