@@ -37,10 +37,10 @@ var ExcludeBasedOnList = func(path string, info os.FileInfo) bool {
 		fullpathmatched, _ := filepath.Match(s, path)
 		if fullpathmatched || partialpathmatched {
 			fmt.Printf("Sobiv Path on %s\n", s)
-			return true
+			return false
 		}
 	}
-	return false
+	return true
 }
 var defaultSetKeyVals = []KeyVal{"type=file", "nlink=1", "flags=none", "mode=0664"}
 
