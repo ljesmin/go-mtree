@@ -22,7 +22,6 @@ func (s *pathFilter) String() string {
 
 // The second method is Set(value string) error
 func (s *pathFilter) Set(value string) error {
-	fmt.Printf("%s\n", value)
 	*s = append(*s, value)
 	return nil
 }
