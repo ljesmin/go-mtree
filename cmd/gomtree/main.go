@@ -226,7 +226,9 @@ func app() error {
 	}
 
 	if len(flOnlyInclude) > 0 {
-		mtree.OnlyInclude = flOnlyInclude
+		for _, s := range flOnlyInclude {
+			mtree.OnlyInclude = append(mtree.OnlyInclude, s)
+		}
 		excludes = append(excludes, mtree.ExcludeBasedOnList)
 	}
 
