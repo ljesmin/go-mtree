@@ -31,10 +31,15 @@ var ExcludeNonDirectories = func(path string, info os.FileInfo) bool {
 
 // ExcludeBasedOnList is an ExcludeFunc for excluding based on -O flags
 var ExcludeBasedOnList = func(path string, info os.FileInfo) bool {
-	for i := 0; i < len(OnlyInclude); i++ {
-		fmt.Printf("Path on %s\n", OnlyInclude[i])
+	for _, s := range OnlyInclude {
+		fmt.Printf("Path on %s\n", s)
+		matched, _ := filepath.Match(s, path)
+		if matched {
+			fmt.Printf("Sobiv Path on %s\n", s)
+			return true
+		}
 	}
-	return true
+	return false
 }
 var defaultSetKeyVals = []KeyVal{"type=file", "nlink=1", "flags=none", "mode=0664"}
 
